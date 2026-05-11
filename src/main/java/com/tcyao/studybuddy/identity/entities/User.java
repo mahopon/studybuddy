@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
@@ -13,8 +15,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "users")
-public class User extends Timestamps {
+public class User extends Timestamps implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

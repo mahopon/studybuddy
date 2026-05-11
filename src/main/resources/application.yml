@@ -2,7 +2,7 @@ spring:
   application:
     name: studybuddy
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driverClassName: org.h2.Driver
     username: sa
     password:
@@ -10,6 +10,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true
   h2:
     console:
       enabled: true
@@ -17,7 +18,7 @@ spring:
   session:
     store-type: jdbc
     jdbc:
-      initialize-schema: embedded
+      initialize-schema: never
     timeout: 30m
 
 logging:
