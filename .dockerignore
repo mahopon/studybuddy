@@ -1,0 +1,33 @@
+# Build artifacts
+target/
+build/
+out/
+*.jar
+*.war
+
+# IDE and Project metadata
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.nb-gradle/
+
+# Secrets and Configs
+.env
+*.properties
+!src/main/resources/*.properties
+aws.json
+
+# Version Control
+.git
+.gitignore
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Docker-related
+Dockerfile
+docker-compose*.yml
