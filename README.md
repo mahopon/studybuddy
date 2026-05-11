@@ -1,6 +1,7 @@
 ## Endpoints
 
-### User
+### Identity
+
 1. POST /auth/register
 2. POST /auth/login
 3. POST /auth/logout
