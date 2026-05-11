@@ -1,3 +1,7 @@
+# StudyBuddy
+
+A web app that helps you to study.
+
 ## Endpoints
 
 ### Identity
