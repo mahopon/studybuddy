@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public class UserService {
         return repo.save(user);
     }
 
+    @Transactional(readOnly = true)
     public GetProfileResponseDTO getUserProfile(UUID id) {
         return repo.findById(id)
                 .map(u -> {

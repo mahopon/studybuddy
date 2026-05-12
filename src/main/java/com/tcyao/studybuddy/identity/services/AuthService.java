@@ -3,7 +3,6 @@ package com.tcyao.studybuddy.identity.services;
 import com.tcyao.studybuddy.identity.entities.Auth;
 import com.tcyao.studybuddy.identity.entities.User;
 import com.tcyao.studybuddy.identity.repositories.AuthRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class AuthService implements UserDetailsService {
         return repo.save(auth);
     }
 
-
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return repo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Auth with email not found: " + email));
