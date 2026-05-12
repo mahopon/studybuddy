@@ -2,6 +2,7 @@ package com.tcyao.studybuddy.config;
 
 import com.tcyao.studybuddy.filters.TrailingSlashNormalizationFilter;
 import com.tcyao.studybuddy.identity.services.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -41,10 +42,13 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")             // role-restricted
                         .anyRequest().authenticated()                             // everything else requires login
                 ).headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-                .formLogin(form -> form
-                        .loginPage("/login").permitAll()
-                )
-                .logout(logout -> logout.permitAll())
+                .logout(logout -> logout.logoutUrl("/auth/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "remember-me")
+                        .clearAuthentication(true).permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session on login, reuse on subsequent requests
                         .maximumSessions(1)                                        // Prevent session duplication per user

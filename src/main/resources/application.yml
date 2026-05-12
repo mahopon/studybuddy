@@ -19,7 +19,7 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: never
-    timeout: 30m
+    timeout: 30
 
 logging:
   level:
@@ -27,6 +27,10 @@ logging:
       tcyao:
         studybuddy:
           filters: INFO
+    org:
+      springframework:
+        security: INFO
+#          authentication: INFO
 
 server:
   port: 8000
