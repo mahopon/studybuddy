@@ -4,6 +4,7 @@ import com.tcyao.studybuddy.shared.entities.Timestamps;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "auth")
 public class Auth implements UserDetails {
     @Id
@@ -34,7 +36,7 @@ public class Auth implements UserDetails {
     private String hashedPassword;
 
     @Embedded
-    private Timestamps timestamps;
+    private Timestamps timestamps = new Timestamps();
 
     @Override
     public String getUsername() {
