@@ -1,7 +1,9 @@
 package com.tcyao.studybuddy.identity.controllers;
 
+import com.tcyao.studybuddy.identity.dto.ChangePasswordRequestDTO;
 import com.tcyao.studybuddy.identity.dto.LoginRequestDTO;
-import com.tcyao.studybuddy.identity.dto.RegisterResponseDTO;
+import com.tcyao.studybuddy.identity.dto.RegisterRequestDTO;
+import com.tcyao.studybuddy.identity.entities.Auth;
 import com.tcyao.studybuddy.identity.services.AuthService;
 import com.tcyao.studybuddy.identity.services.RegisterService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,10 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class AuthController {
     private final AuthenticationManager authManager;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> postRegister(@RequestBody RegisterResponseDTO req) {
+    public ResponseEntity<Void> postRegister(@RequestBody RegisterRequestDTO req) {
         registerService.registerEmail(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -51,4 +52,13 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/password")
+    public ResponseEntity<Void> patchChangePassword(@RequestBody ChangePasswordRequestDTO changePWReq) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Auth user = (Auth) auth.getPrincipal();
+
+        UUID id = user.getId();
+        authService.changePassword(id, changePWReq.getOldPassword(), changePWReq.getNewPassword());
+        return ResponseEntity.ok().build();
+    }
 }

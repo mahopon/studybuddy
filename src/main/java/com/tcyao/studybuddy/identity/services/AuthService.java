@@ -2,6 +2,9 @@ package com.tcyao.studybuddy.identity.services;
 
 import com.tcyao.studybuddy.identity.entities.Auth;
 import com.tcyao.studybuddy.identity.entities.User;
+import com.tcyao.studybuddy.identity.exceptions.EmailInUseException;
+import com.tcyao.studybuddy.identity.exceptions.UserNotFoundException;
+import com.tcyao.studybuddy.identity.exceptions.WrongPasswordException;
 import com.tcyao.studybuddy.identity.repositories.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
@@ -22,9 +27,9 @@ public class AuthService implements UserDetailsService {
 
     @Transactional
     public Auth registerAuth(User user, String email, String password, String authType) {
-//        if (repo.findByEmail(email).isPresent()) {
-//
-//        }
+        if (repo.findByEmail(email).isPresent()) {
+            throw new EmailInUseException();
+        }
         Auth auth = new Auth();
         auth.setUser(user);
         auth.setEmail(email);
@@ -42,5 +47,16 @@ public class AuthService implements UserDetailsService {
 //                .withUsername(auth.getEmail())
 //                .password(auth.getHashedPassword())
 //                .build();
+    }
+
+    @Transactional
+    public void changePassword(UUID id, String oldPassword, String newPassword) {
+        Auth auth = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if (!passwordEncoder.matches(oldPassword, auth.getHashedPassword())) {
+            throw new WrongPasswordException();
+        }
+        String newHashedPassword = passwordEncoder.encode(newPassword);
+        auth.setHashedPassword(newHashedPassword);
+        repo.save(auth);
     }
 }

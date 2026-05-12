@@ -22,7 +22,16 @@ public class AuthExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Void> handleUserNotFound(UserNotFoundException ex) {
-        log.warn(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseEntity<String> handleWrongPassword(WrongPasswordException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailInUseException.class)
+    public ResponseEntity<String> handleEmailInUse(EmailInUseException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
