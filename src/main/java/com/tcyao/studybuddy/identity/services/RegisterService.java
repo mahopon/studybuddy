@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class RegisterService {
@@ -15,7 +16,6 @@ public class RegisterService {
     private final AuthService authService;
     private final UserService userService;
 
-    @Transactional
     public void registerEmail(RegisterRequestDTO registrationDetails) {
         User user = userService.registerUser(registrationDetails.getDisplayName(), registrationDetails.getAge());
         authService.registerAuth(user, registrationDetails.getEmail(), registrationDetails.getPassword(), "EMAIL");

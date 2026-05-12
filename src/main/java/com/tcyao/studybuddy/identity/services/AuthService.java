@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
@@ -25,7 +26,6 @@ public class AuthService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AuthRepository repo;
 
-    @Transactional
     public Auth registerAuth(User user, String email, String password, String authType) {
         if (repo.findByEmail(email).isPresent()) {
             throw new EmailInUseException();
@@ -49,7 +49,6 @@ public class AuthService implements UserDetailsService {
 //                .build();
     }
 
-    @Transactional
     public void changePassword(UUID id, String oldPassword, String newPassword) {
         Auth auth = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         if (!passwordEncoder.matches(oldPassword, auth.getHashedPassword())) {
