@@ -1,7 +1,7 @@
 package com.tcyao.studybuddy.identity.controllers;
 
-import com.tcyao.studybuddy.identity.dto.LoginDTO;
-import com.tcyao.studybuddy.identity.dto.RegisterDTO;
+import com.tcyao.studybuddy.identity.dto.LoginRequestDTO;
+import com.tcyao.studybuddy.identity.dto.RegisterResponseDTO;
 import com.tcyao.studybuddy.identity.services.AuthService;
 import com.tcyao.studybuddy.identity.services.RegisterService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,14 +29,14 @@ public class AuthController {
     private final AuthenticationManager authManager;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> postRegister(@RequestBody RegisterDTO req) {
+    public ResponseEntity<Void> postRegister(@RequestBody RegisterResponseDTO req) {
         registerService.registerEmail(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<Void> postLogin(@RequestBody LoginDTO loginReq, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Void> postLogin(@RequestBody LoginRequestDTO loginReq, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword())
         );

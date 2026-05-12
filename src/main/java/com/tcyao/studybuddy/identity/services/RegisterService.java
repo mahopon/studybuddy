@@ -1,6 +1,6 @@
 package com.tcyao.studybuddy.identity.services;
 
-import com.tcyao.studybuddy.identity.dto.RegisterDTO;
+import com.tcyao.studybuddy.identity.dto.RegisterResponseDTO;
 import com.tcyao.studybuddy.identity.entities.Auth;
 import com.tcyao.studybuddy.identity.entities.User;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class RegisterService {
     private final AuthService authService;
     private final UserService userService;
 
-    public void registerEmail(RegisterDTO registrationDetails) {
+    public void registerEmail(RegisterResponseDTO registrationDetails) {
         User user = userService.registerUser(registrationDetails.getDisplayName(), registrationDetails.getAge());
         Auth auth = authService.registerAuth(user, registrationDetails.getEmail(), registrationDetails.getPassword(), "EMAIL");
 
