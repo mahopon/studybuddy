@@ -1,5 +1,6 @@
 package com.tcyao.studybuddy.identity.entities;
 
+import com.tcyao.studybuddy.shared.entities.Timestamps;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,8 +31,10 @@ public class Auth implements UserDetails {
     @Column(nullable = true)
     private String email;
 
-    @Column()
     private String hashedPassword;
+
+    @Embedded
+    private Timestamps timestamps;
 
     @Override
     public String getUsername() {

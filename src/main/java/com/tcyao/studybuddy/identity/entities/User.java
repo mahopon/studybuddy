@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "users")
-public class User extends Timestamps implements Serializable {
+public class User implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,6 +26,8 @@ public class User extends Timestamps implements Serializable {
     private String displayName;
     @Column(nullable = true)
     private int age;
+
+    private Timestamps timestamps;
 
     public User(String displayName, int age) {
         this.displayName = displayName;
