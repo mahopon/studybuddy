@@ -15,8 +15,14 @@ public class AuthExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(AuthExceptionHandler.class);
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handleUserNotFound(BadCredentialsException ex, HttpServletRequest request) {
+    public ResponseEntity<String> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
         log.warn("Failed login attempt for user from IP '{}'", request.getRemoteAddr());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Void> handleUserNotFound(UserNotFoundException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }
