@@ -29,6 +29,8 @@ logging:
     #          filters: INFO
     org:
       springframework:
+        web:
+          servlet: OFF
         security: INFO
 #          authentication: INFO
 
