@@ -1,12 +1,12 @@
 package com.tcyao.studybuddy.identity.services;
 
-import com.tcyao.studybuddy.identity.dto.RegisterResponseDTO;
-import com.tcyao.studybuddy.identity.entities.Auth;
+import com.tcyao.studybuddy.identity.dto.RegisterRequestDTO;
 import com.tcyao.studybuddy.identity.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,9 +15,9 @@ public class RegisterService {
     private final AuthService authService;
     private final UserService userService;
 
-    public void registerEmail(RegisterResponseDTO registrationDetails) {
+    @Transactional
+    public void registerEmail(RegisterRequestDTO registrationDetails) {
         User user = userService.registerUser(registrationDetails.getDisplayName(), registrationDetails.getAge());
-        Auth auth = authService.registerAuth(user, registrationDetails.getEmail(), registrationDetails.getPassword(), "EMAIL");
-
+        authService.registerAuth(user, registrationDetails.getEmail(), registrationDetails.getPassword(), "EMAIL");
     }
 }
